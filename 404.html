@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en" class="mdl-js">
+<head>
+    <meta charset="utf-8">
+    <link rel="shortcut icon" type="image/x-icon" href="file/favicon.ico" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Dublin Bus - Bus schedule times in real time. Search by bus stop, address or choose from a map. Optimized for web and mobile.">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <title>Dublin Bus - 404 Not Found</title>
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="keywords" content="dublin bus,dublin,bus,transport,live,bus,timetable,timeschedule,rtpi,transport for ireland,dublin bu slive,ireland,last bus, dublin realtime, realtime, bus realtime">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Dublin Bus - Live">
+    <meta name="msapplication-TileColor" content="#3372DF">
+    <meta property="og:title" content="Dublin Bus Live Info" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="dublinbus.info" />
+    <meta property="og:image" content="file/card2.jpg" />
+    <meta property="og:site_name" content="Dublin Bus Live Info - Live Bus Departures anywhere" />
+    <meta property="og:description" content="Dublin Bus schedule times in real time. Search by bus stop, address or choose from a map. Optimized for web and mobile." />
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-yellow.min.css">
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" href="css/dbs_app.css">
+    <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+</head>
+
+<body>
+    <a href="index.html" class="remove corner-ribbon bottom-right sticky"><span id="testimony"></span></a>
+    <main>
+    <div class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect" style="flex: 1 0 auto">
+            <div class="mdl-container mdl-grid">
+                <div class="mdl-cell mdl-cell--2-col mdl-cell--hide-tablet mdl-cell--hide-phone"></div>
+                <div class="mdl-content mdl-shadow--0dp content mdl-color-text--grey-800 mdl-cell mdl-cell--8-col">
+                    <div class="mdl-crumbs mdl-color-text--grey-500" id="stuffs">
+                        <div class="stop-card-wide mdl-card mdl-shadow--2dp">
+                            <div class="mdl-card__title">
+                                <h2 class="mdl-card__title-text" id="bus_stop_name" style="color: #3F51B5; background-color: white; padding: 10px; border-radius: 5px;"><span class="remove" id="initial_stop_name"><strong>404</strong> Not Found :-(</span></h2>
+                            </div>
+                            <div class="mdl-card__supporting-text" id="bus_info">
+                                <button onclick="window.location.href='index.html'" class="mdl-button" style="background-color: #3F51B5; color: #FFFFFF;">Go Back</button>
+                            </div>
+                            <div class="mdl-card__actions mdl-card--border">
+                            </div>
+                            <div id="topleft" class="mdl-card__menu">
+                            </div>
+                        </div>
+                        <div id="map" class="mdl-shadow--2dp"></div>
+                        <div id="results_body"></div>
+                    </div>
+                </div>
+            </div>
+    </div>
+
+    <div id="stop_picker" title=""></div>
+    <div id="loading" class="modal" style="text-align: center;">
+        <span style="color: #3F51B5; font-size: 18px;">Fetching real-time data...</span>
+    </div>
+    <div id="overlay" class="remove"></div>
+</body>
+<script>
+     $(function() {
+        $("#stop_picker").dialog({
+            autoOpen: false
+        });
+    });
+</script>
+<script>
+        $(function() {
+            var testimonies = ["Made by penguins", "Perfect for dogs","Fairly OK", "Not too bad", "It works", "It doesn't break often"];
+            $("#testimony").html(testimonies[Math.floor(Math.random()*testimonies.length)]);
+        });
+</script>
+
+<script defer src="js/dbs_quicklook.js" defer></script>
+<script defer src="js/dbs_stops.js"></script>
+<script defer src="js/dbs_app.js"></script>
+
+</html>

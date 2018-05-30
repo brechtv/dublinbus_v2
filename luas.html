@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en" class="mdl-js">
+<head>
+    <meta charset="utf-8">
+    <link rel="shortcut icon" type="image/x-icon" href="file/favicon.ico" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Dublin Bus - Bus schedule times in real time. Search by Luas stop, address or choose from a map. Optimized for web and mobile.">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <title>Dublin Bus - Realtime</title>
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="keywords" content="dublin Luas,dublin,Luas,transport,live,Luas,timetable,timeschedule,rtpi,transport for ireland,dublin bu slive,ireland,last Luas, dublin realtime, realtime, Luas realtime">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Dublin Bus - Realtime">
+    <meta name="msapplication-TileColor" content="#3372DF">
+    <meta property="og:title" content="Dublin Bus Realtime Info" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="dublinLuas.info" />
+    <meta property="og:image" content="file/card2.jpg" />
+    <meta property="og:site_name" content="Dublin Bus Realtime Info - Live Bus Departures anywhere" />
+    <meta property="og:description" content="Dublin Bus schedule times in real time. Search by Luas stop, address or choose from a map. Optimized for web and mobile." />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-yellow.min.css">
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" href="css/luas.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDnJ6YfjWb7bDBtJl9OyGHzJybd6C7n0Eg&libraries=geometry"></script>
+    <script>
+    (function(i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r;
+        i[r] = i[r] || function() {
+            (i[r].q = i[r].q || []).push(arguments)
+        }, i[r].l = 1 * new Date();
+        a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0];
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+    ga('create', 'UA-97384478-1', 'auto');
+    ga('send', 'pageview');
+    </script>
+</head>
+<body>
+    <!-- <a href="index.html" class="remove corner-ribbon top-right sticky blue">Go to Bus</a> -->
+    <div class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect">
+            <div class="mdl-container mdl-grid">
+                <div class="mdl-cell mdl-cell--2-col mdl-cell--hide-tablet mdl-cell--hide-phone"></div>
+                <div class="mdl-content mdl-shadow--0dp content mdl-color-text--grey-800 mdl-cell mdl-cell--8-col">
+                    <div class="mdl-crumbs mdl-color-text--grey-500">
+                        <div class="stop-card-wide mdl-card mdl-shadow--2dp">
+                            <div class="mdl-card__title">
+                                <h2 class="mdl-card__title-text" id="luas_stop_name" style="color: #FFEB3B;"><span class="remove" id="initial_stop_name"><strong>Luas</strong> Realtime</span></h2>
+                            </div>
+                            <div class="mdl-card__supporting-text" id="luas_info">
+                                <div class="searchbox">
+                                    <input class="searchfield" placeholder="Enter a Luas stop name" type="text" id="input">
+                                </div>
+                            </div>
+                            <div class="mdl-card__actions mdl-card--border">
+                                <p class="remove" style="font-size: 12px;">Search by address or Luas stop name. For example: <i>"Hospital"</i> or <i>"Abbey Street"</i>.</p>
+                                <div id="chips"></div>
+                                <div style="float: right;" id="links">
+
+                                    </div>
+                            </div>
+                            <div id="topleft" class="mdl-card__menu">
+                            </div>
+                        </div>
+                        <div id="map" class="mdl-shadow--2dp"></div>
+                        <div id="results_body"></div>
+                    </div>
+                    <div class="stop-card-wide mdl-card mdl-shadow--2dp remove">
+                        <div class="mdl-card__supporting-text">
+                            <h4>How to use</h4>
+                            <ul>
+                                <li>Luas Realtime lets you find the <strong>live departures</strong> for any Luas stop in Dublin. Search by Luas stop name or use the autocomplete.
+                            </ul>
+                        </div>
+                        <div class="mdl-card__menu">
+                            <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect" onclick='$(this).parent().parent().remove();''>
+                                <i class="material-icons md-dark">close</i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+    <script>
+    $(function() {
+        $("#stop_picker").dialog({
+            autoOpen: false,
+        });
+    });
+    </script>
+    <div id="stop_picker" title=""></div>
+    <div id="loading" class="modal" style="text-align: center;">
+        <span style="color: #3F51B5;">Fetching real-time data...</span>
+    </div>
+    <div id="overlay" class="remove"></div>
+    <script async src="js/luas_stops.js"></script>
+    <script async src="js/luas.js"></script>
+     <script>
+  $( function() {
+    var stops = [
+        "Tallaght",
+        "Hospital",
+        "Cookstown",
+        "Belgard",
+        "Kingswood",
+        "Red Cow",
+        "Kylemore",
+        "Bluebell",
+        "Blackhorse",
+        "Drimnagh",
+        "Goldenbridge",
+        "Suir Road",
+        "Rialto",
+        "Fatima",
+        "James's",
+        "Heuston",
+        "Museum",
+        "Smithfield",
+        "Four Courts",
+        "Jervis",
+        "Abbey Street",
+        "Busáras",
+        "Connolly",
+        "St. Stephen's Green",
+        "Harcourt",
+        "Charlemont",
+        "Ranelagh",
+        "Beechwood",
+        "Cowper",
+        "Milltown",
+        "Windy Arbour",
+        "Dundrum",
+        "Balally",
+        "Kilmacud",
+        "Stillorgan",
+        "Sandyford",
+        "Central Park",
+        "Glencairn",
+        "The Gallops",
+        "Leopardstown Valley",
+        "Ballyogan Wood",
+        "Racecourse",
+        "Carrickmines",
+        "Brennanstown",
+        "Laughanstown",
+        "Cherrywood",
+        "Brides Glen",
+        "Fettercairn",
+        "Cheeverstown",
+        "Citywest Campus",
+        "Fortunestown",
+        "Saggart",
+        "George's Dock",
+        "Mayor Square - NCI",
+        "Spencer Dock",
+        "The Point",
+        "Depot",
+        "Scheme"
+    ];
+    $( "#input" ).autocomplete({
+      source: stops
+    });
+  } );
+  </script>
+  <footer class="mdl-mini-footer">
+  <div class="mdl-mini-footer__left-section">
+    <div class="mdl-logo">Dublin Bus & Luas Real Time information</div>
+    <ul class="mdl-mini-footer__link-list">
+      <li><a href="index.html">Dublin Bus</a></li>
+      <li><a href="luas.html">Luas</a></li>
+    </ul>
+  </div>
+</footer>
+<script type="text/javascript">
+    var stopsies = [1,16,21,22,23,24,32,36,48,57];
+</script>
+</body>
+
+</html>
